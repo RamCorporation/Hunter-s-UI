@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "hunters_ui",
+  "version": "${version}",
+  "name": "Hunters UI",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/RamCorporation/Hunters UI"
+  },
+  "license": "MIT",
+  "icon": "assets/hunters_ui/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.ramgames.hunters_ui.client.HuntersUIClient"
+    ]
+  },
+  "mixins": [
+    "hunters_ui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

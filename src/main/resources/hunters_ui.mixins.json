@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ramgames.hunters_ui.client.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "InventoryScreenMixin",
+    "PlayerScreenHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
