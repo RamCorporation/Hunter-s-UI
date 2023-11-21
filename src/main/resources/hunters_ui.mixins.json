@@ -4,6 +4,8 @@
   "package": "net.ramgames.hunters_ui.client.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "CreativeInventoryScreenMixin",
+    "CreativeScreenHandler",
     "InventoryScreenMixin",
     "PlayerScreenHandlerMixin"
   ],

@@ -35,11 +35,6 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
     @Shadow
     private RecipeBookWidget recipeBook;
 
-    @Shadow
-    public static void drawEntity(DrawContext context, float x, float y, int size, Vector3f vector3f, Quaternionf quaternionf, @Nullable Quaternionf quaternionf2, LivingEntity entity) {
-
-    }
-
     public InventoryScreenMixin(PlayerScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
         super(screenHandler, playerInventory, text);
     }
@@ -60,7 +55,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     public void init(CallbackInfo ci) {
-        backgroundWidth = 219;
+        backgroundWidth = 218;
         backgroundHeight = 200;
         if(this.client == null) return;
         if(this.client.interactionManager == null) return;
