@@ -32,7 +32,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
     @ModifyArgs(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;<init>(Lnet/minecraft/client/font/TextRenderer;IIIILnet/minecraft/text/Text;)V"))
     public void moveSearchBar(Args args) {
-        args.set(1, 68+(int) args.get(1));
+        args.set(1, 69+(int) args.get(1));
         args.set(2, 4+(int) args.get(2));
     }
 
@@ -43,7 +43,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     }
 
     @Inject(method = "isClickInScrollbar", at = @At("HEAD"), cancellable = true)
-    public void moveSliderHotbox(double mouseX, double mouseY, CallbackInfoReturnable<Boolean> cir) {
+    public void moveSliderHitBox(double mouseX, double mouseY, CallbackInfoReturnable<Boolean> cir) {
 
         int topLeftX = this.x + 128;
         int topLeftY = this.y + 45;
@@ -51,6 +51,8 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
         int bottomRightY = this.y + 225;
         cir.setReturnValue(mouseX >= topLeftX && mouseX <= bottomRightX && mouseY >= topLeftY && mouseY <= bottomRightY);
     }
+
+
 
 
     @ModifyConstant(method = "mouseDragged", constant = @Constant(intValue = 18))
@@ -66,7 +68,9 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     @ModifyArgs(method = "drawForeground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I"))
     public void moveTabTitle(Args args) {
         int width = ((TextRenderer) args.get(0)).getWidth(((Text) args.get(1)));
-        args.set(2, (width % 2) + 120 + (width / 2));
-        args.set(3, 205);
+        args.set(2, 194 - (width / 2));
+        args.set(3, 206);
     }
+
+
 }

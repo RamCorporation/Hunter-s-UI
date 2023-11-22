@@ -2,22 +2,20 @@ package net.ramgames.hunters_ui.client.mixins;
 
 
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(CreativeInventoryScreen.CreativeScreenHandler.class)
-public abstract class CreativeScreenHandler extends ScreenHandler {
+public abstract class CreativeScreenHandlerMixin extends ScreenHandler {
 
-    protected CreativeScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId) {
+
+
+
+    protected CreativeScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId) {
         super(type, syncId);
     }
 
@@ -43,11 +41,22 @@ public abstract class CreativeScreenHandler extends ScreenHandler {
         }
     }
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    public void addInventorySlots(PlayerEntity player, CallbackInfo ci) {
-        this.addSlot(new Slot(player.getInventory(), 9, 6, 75));
-        this.addSlot(new Slot(player.getInventory(), 10, 86, 75));
-        for (int i = 11; i < 36; i++)
-            this.addSlot(new Slot(player.getInventory(), i, 6 + (20 * ((i-11) % 5)), 95 + (20 * ((i-11) / 5))));
+    @ModifyConstant(method = "scrollItems", constant = @Constant(intValue = 5))
+    public int changeAssumedInventoryRows(int constant) {
+        return 9;
+    }
+
+    @ModifyConstant(method = "scrollItems", constant = @Constant(intValue = 9))
+    public int changeAssumedInventoryColumns(int constant) {
+        return 5;
+    }
+
+    @ModifyConstant(method = "getOverflowRows", constant = @Constant(intValue = 9))
+    public int changeSlotsPerColumns(int constant) {
+        return 5;
+    }
+    @ModifyConstant(method = "getOverflowRows", constant = @Constant(intValue = 5))
+    public int changeNumberOfColumns(int constant) {
+        return 9;
     }
 }

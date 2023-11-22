@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "CreativeInventoryScreenMixin",
-    "CreativeScreenHandler",
+    "CreativeScreenHandlerMixin",
     "InventoryScreenMixin",
     "PlayerScreenHandlerMixin"
   ],
