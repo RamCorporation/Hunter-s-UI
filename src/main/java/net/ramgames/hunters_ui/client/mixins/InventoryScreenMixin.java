@@ -6,7 +6,10 @@ import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -18,6 +21,7 @@ import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -55,7 +59,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     public void init(CallbackInfo ci) {
-        backgroundWidth = 218;
+        backgroundWidth = 219;
         backgroundHeight = 200;
         if(this.client == null) return;
         if(this.client.interactionManager == null) return;
@@ -76,11 +80,6 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
         if(this.client.interactionManager.hasCreativeInventory()) {
             this.client.setScreen(new CreativeInventoryScreen(this.client.player, this.client.player.networkHandler.getEnabledFeatures(), (Boolean)this.client.options.getOperatorItemsTab().getValue()));
         }
-    }
-
-    @ModifyArg(method = "drawEntity(Lnet/minecraft/client/gui/DrawContext;IIIIIFFFLnet/minecraft/entity/LivingEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/InventoryScreen;drawEntity(Lnet/minecraft/client/gui/DrawContext;FFILorg/joml/Vector3f;Lorg/joml/Quaternionf;Lorg/joml/Quaternionf;Lnet/minecraft/entity/LivingEntity;)V"), index = 3)
-    private static int drawEntity(int size) {
-        return size*2;
     }
 
     @Inject(method = "onMouseClick", at = @At("HEAD"),cancellable = true)
