@@ -10,6 +10,7 @@
     "InventoryScreenMixin",
     "PlayerScreenHandlerMixin"
   ],
+  "plugin": "net.ramgames.hunters_ui.client.mixins.ModMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

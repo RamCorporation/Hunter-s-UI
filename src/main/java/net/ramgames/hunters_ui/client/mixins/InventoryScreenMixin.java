@@ -25,7 +25,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(InventoryScreen.class)
 public abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreenHandler> {
@@ -80,6 +82,15 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
         if(this.client.interactionManager.hasCreativeInventory()) {
             this.client.setScreen(new CreativeInventoryScreen(this.client.player, this.client.player.networkHandler.getEnabledFeatures(), (Boolean)this.client.options.getOperatorItemsTab().getValue()));
         }
+    }
+
+    @ModifyArgs(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/InventoryScreen;drawEntity(Lnet/minecraft/client/gui/DrawContext;IIIIIFFFLnet/minecraft/entity/LivingEntity;)V"))
+    public void adjustInventoryPlayerPreview(Args args) {
+        args.set(1, this.x+8);
+        args.set(2, this.y+13);
+        args.set(3, this.x+67);
+        args.set(4, this.y+107);
+        args.set(5, 45);
     }
 
     @Inject(method = "onMouseClick", at = @At("HEAD"),cancellable = true)

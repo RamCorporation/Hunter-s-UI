@@ -14,6 +14,9 @@
   "entrypoints": {
     "client": [
       "net.ramgames.hunters_ui.client.HuntersUIClient"
+    ],
+    "mixinsquared": [
+      "net.ramgames.hunters_ui.client.mixins.ModMixinCanceller"
     ]
   },
   "mixins": [

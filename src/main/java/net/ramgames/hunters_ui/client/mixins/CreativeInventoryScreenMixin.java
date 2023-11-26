@@ -9,7 +9,6 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroup;
@@ -17,7 +16,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.ramgames.hunters_ui.client.HuntersUIClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,6 +46,7 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
     @Shadow private float scrollPosition;
 
+    @Shadow private boolean scrolling;
     @Unique
     private static int tabsOffset = 0;
 
@@ -286,8 +285,8 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
 
     @Inject(method = "render", at = @At("TAIL"))
     private void renderNewTabTooltips(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        int tabIndex = tabHoveringOver(mouseX, mouseY)+tabsOffset;
-        if(tabIndex != -1) context.drawTooltip(textRenderer, itemGroups.get(tabIndex).getDisplayName(), mouseX, mouseY);
+        int tabIndex = tabHoveringOver(mouseX, mouseY);
+        if(tabIndex != -1) context.drawTooltip(textRenderer, itemGroups.get(tabIndex+tabsOffset).getDisplayName(), mouseX, mouseY);
     }
 
     @Inject(method = "init", at = @At("TAIL"))
@@ -297,7 +296,6 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
             Identifier id = entry.getKey().getValue();
             boolean logic = !id.equals(new Identifier("search")) && !id.equals(new Identifier("hotbar")) && !id.equals(new Identifier("inventory"));
             if(!shouldShowOperatorTab(MinecraftClient.getInstance().player)) logic &= !id.equals(new Identifier("op_blocks"));
-            HuntersUIClient.LOGGER.info(id.toString());
             return logic;
         }).map(Map.Entry::getValue).toList();
         while(tabsOffset+6 >= itemGroups.size()) tabsOffset--;
@@ -343,5 +341,10 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
         cir.setReturnValue(false);
     }
 
+    @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
+    public void removeSelectingForOldTabs(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+        if(button == 0) scrolling = false;
+        cir.setReturnValue(super.mouseReleased(mouseX, mouseY, button));
+    }
 
 }
